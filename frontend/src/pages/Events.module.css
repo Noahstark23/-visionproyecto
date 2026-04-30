@@ -1,0 +1,5 @@
+.eventsPage {
+  background: var(--bg-primary);
+  height: 100%;
+  overflow: auto;
+}
