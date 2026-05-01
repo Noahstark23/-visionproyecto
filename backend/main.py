@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base, SessionLocal
-from app.routers import channels, categories, streams, auth, status
+from app.routers import channels, categories, streams, auth, status, pluto
 from app.models.category import Category
 from app.models.channel import Channel
 from app.models.user import User
@@ -160,6 +160,7 @@ app.include_router(categories.router)
 app.include_router(streams.router)
 app.include_router(auth.router)
 app.include_router(status.router)
+app.include_router(pluto.router)
 
 @app.get("/health")
 def health_check():

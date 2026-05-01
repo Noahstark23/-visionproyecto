@@ -15,6 +15,19 @@ HEADERS = {
 
 
 async def get_stream_url(channel_slug: str) -> str:
+    from app.database import SessionLocal
+    from app.models.channel import Channel as ChannelModel
+
+    db = SessionLocal()
+    try:
+        channel = db.query(ChannelModel).filter(ChannelModel.slug == channel_slug).first()
+        if channel and channel.stream_url.startswith("pluto:"):
+            from app.routers.pluto import get_pluto_stream_url
+            channel_id = channel.stream_url[6:]
+            return await get_pluto_stream_url(channel_id)
+    finally:
+        db.close()
+
     tvtvhd_url = f"https://tvtvhd.com/vivo/canales.php?stream={channel_slug}"
 
     async with httpx.AsyncClient(timeout=15, headers=HEADERS, follow_redirects=True) as client:
